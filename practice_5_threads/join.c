@@ -1,13 +1,3 @@
-/*****************************************************************************
-* FILE: join.c
-* DESCRIPTION:
-*   This example demonstrates how to "wait" for thread completions by using
-*   the Pthread join routine.  Threads are explicitly created in a joinable
-*   state for portability reasons. Use of the pthread_exit status argument is
-*   also shown. Compare to detached.c
-* AUTHOR: 8/98 Blaise Barney
-* LAST REVISED:  01/30/09
-******************************************************************************/
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,29 +5,40 @@
 
 #define NUM_THREADS    2
 
-void *threadWork(void *t) {
-    long tid = (long) t;
-    printf("Thread %ld starting...\n", tid);
+long counter = 0;
 
-    printf("Thread %ld done. Result = %s\n", tid, "Hello, World!");
-    pthread_exit((void *) t);
+void *threadWork(void *input) {
+    long *counter = (long *) input;
+    printf("Thread starting...\n");
+
+    long i;
+    for (i = 0; i < 100000; i++) {
+        (*counter)++;
+    }
+
+    printf(" Thread input value %li \n", *counter);
+
+    printf("Thread done.\n");
+    pthread_exit((void *) input);
 }
 
 int main(int argc, char *argv[]) {
     pthread_t thread[NUM_THREADS];
     pthread_attr_t attr;
-    int returnCode;
 
     /* Initialize thread detached attribute */
     pthread_attr_init(&attr);
-    /* Set thread detached attribute
-    The purpose of "PTHREAD_CREATE_JOINABLE" is that it allows you to call pthread_join on the thread */
+    /*
+     * Set thread detached attribute.
+     * The purpose of PTHREAD_CREATE_JOINABLE is that it allows you to call pthread_join on the thread.
+     */
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
 
+    int returnCode;
     long i;
     for (i = 0; i < NUM_THREADS; i++) {
         printf("Main: creating thread %ld\n", i);
-        returnCode = pthread_create(&thread[i], &attr, threadWork, (void *) i);
+        returnCode = pthread_create(&thread[i], &attr, threadWork, (void *) &counter);
         if (returnCode) {
             printf("ERROR; return code from pthread_create() is %d\n", returnCode);
             exit(-1);
@@ -54,9 +55,10 @@ int main(int argc, char *argv[]) {
             printf("ERROR; return code from pthread_join() is %d\n", returnCode);
             exit(-1);
         }
-        printf("Main: completed join with thread %ld having a status of %ld\n", i, (long) status);
+        // printf("Main: completed join with thread %ld having a status of %ld\n", i, (long) status);
     }
 
+    printf("Main: counter value %li \n", counter);
     printf("Main: program completed. Exiting.\n");
     pthread_exit(NULL);
 }
