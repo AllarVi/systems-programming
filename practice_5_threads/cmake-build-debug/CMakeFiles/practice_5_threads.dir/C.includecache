@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/hello.c
+pthread.h
+-
+stdio.h
+-
+stdlib.h
+-
+

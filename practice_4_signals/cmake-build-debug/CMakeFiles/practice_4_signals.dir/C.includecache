@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_4_signals/main.c
+stdio.h
+-
+unistd.h
+-
+
