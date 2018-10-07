@@ -4,6 +4,7 @@
 #include <math.h>
 
 #define NUM_THREADS    2
+pthread_mutex_t mutexCounter;
 
 long counter = 0;
 
@@ -12,9 +13,12 @@ void *threadWork(void *input) {
     printf("Thread starting...\n");
 
     long i;
+
+    pthread_mutex_lock(&mutexCounter);
     for (i = 0; i < 100000; i++) {
         (*counter)++;
     }
+    pthread_mutex_unlock(&mutexCounter);
 
     printf(" Thread input value %li \n", *counter);
 
@@ -26,6 +30,7 @@ int main(int argc, char *argv[]) {
     pthread_t thread[NUM_THREADS];
     pthread_attr_t attr;
 
+    pthread_mutex_init(&mutexCounter, NULL);
     /* Initialize thread detached attribute */
     pthread_attr_init(&attr);
     /*
@@ -60,6 +65,7 @@ int main(int argc, char *argv[]) {
 
     printf("Main: counter value %li \n", counter);
     printf("Main: program completed. Exiting.\n");
+    pthread_mutex_destroy(&mutexCounter);
     pthread_exit(NULL);
 }
 
