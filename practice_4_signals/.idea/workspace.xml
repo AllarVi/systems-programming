@@ -11,7 +11,161 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9933ac1c-1015-461e-9ece-f1fb03f0835f" name="Default Changelist" comment="" />
+    <list default="true" id="9933ac1c-1015-461e-9ece-f1fb03f0835f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../practice_2/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_2/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_2/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_2/.idea/practice_2.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_2/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_2/CoffeeScript" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_2/Colors" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_2/Files" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_2/JavaScript" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_2/Load" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_2/MRU" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_2/Misc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_2/Shell" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_2/Status" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_2/VIM" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_2/Visual" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_2/hello" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_2/hello.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_2/input.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_2/show_input" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_2/show_input.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_2/vimgrep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/.idea/practice_3.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeCache.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/3.12.1/CMakeCCompiler.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/3.12.1/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/3.12.1/CMakeSystem.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/3.12.1/CompilerIdC/CMakeCCompilerId.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/3.12.1/CompilerIdC/a.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/3.12.2/CMakeCCompiler.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/3.12.2/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/3.12.2/CMakeSystem.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/3.12.2/CompilerIdC/CMakeCCompilerId.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/3.12.2/CompilerIdC/a.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/Makefile.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/Makefile2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/clion-environment.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/cmake.check_cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/feature_tests.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/feature_tests.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/practice_3.dir/C.includecache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/practice_3.dir/DependInfo.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/practice_3.dir/build.make" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/practice_3.dir/cmake_clean.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/practice_3.dir/depend.internal" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/practice_3.dir/depend.make" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/practice_3.dir/flags.make" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/practice_3.dir/link.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/practice_3.dir/main.c.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/practice_3.dir/practice_3.c.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/practice_3.dir/progress.make" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/CMakeFiles/progress.marks" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/Makefile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/cmake_install.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/practice_3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/cmake-build-debug/practice_3.cbp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/main" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/main.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/practice_3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_3/practice_3.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/practice_4_signals.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.12.2/CMakeCCompiler.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.12.2/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.12.2/CMakeSystem.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.12.2/CompilerIdC/CMakeCCompilerId.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.12.2/CompilerIdC/a.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cmake.check_cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/feature_tests.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/feature_tests.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/practice_4_signals.dir/C.includecache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/practice_4_signals.dir/DependInfo.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/practice_4_signals.dir/build.make" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/practice_4_signals.dir/cmake_clean.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/practice_4_signals.dir/depend.internal" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/practice_4_signals.dir/depend.make" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/practice_4_signals.dir/flags.make" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/practice_4_signals.dir/link.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/practice_4_signals.dir/main.c.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/practice_4_signals.dir/progress.make" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/progress.marks" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/Makefile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/practice_4_signals" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/practice_4_signals.cbp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main_6" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main_6.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/.idea/practice_5_threads.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeCache.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/3.12.2/CMakeCCompiler.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/3.12.2/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/3.12.2/CMakeSystem.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/3.12.2/CompilerIdC/CMakeCCompilerId.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/3.12.2/CompilerIdC/a.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/Makefile.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/Makefile2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/clion-environment.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/cmake.check_cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/feature_tests.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/feature_tests.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/practice_5_threads.dir/C.includecache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/practice_5_threads.dir/DependInfo.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/practice_5_threads.dir/build.make" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/practice_5_threads.dir/cmake_clean.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/practice_5_threads.dir/depend.internal" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/practice_5_threads.dir/depend.make" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/practice_5_threads.dir/flags.make" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/practice_5_threads.dir/hello.c.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/practice_5_threads.dir/link.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/practice_5_threads.dir/main.c.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/practice_5_threads.dir/progress.make" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/CMakeFiles/progress.marks" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/Makefile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/cmake_install.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/practice_5_threads" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/cmake-build-debug/practice_5_threads.cbp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/join" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/join.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/main.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/threaded_hello" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../practice_5_threads/threaded_hello.c" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -104,6 +258,9 @@
       </file>
     </leaf>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -122,6 +279,7 @@
     <option name="width" value="1280" />
     <option name="height" value="800" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -200,7 +358,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2536349" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
