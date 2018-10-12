@@ -1,6 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/practice_5_threads.dir/main.c.o"
-  "CMakeFiles/practice_5_threads.dir/hello.c.o"
+  "CMakeFiles/practice_5_threads.dir/threaded_hello.c.o"
   "CMakeFiles/practice_5_threads.dir/join.c.o"
   "practice_5_threads.pdb"
   "practice_5_threads"

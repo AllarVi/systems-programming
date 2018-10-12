@@ -20,8 +20,8 @@
 
 struct thread_data thread_data_array[NUM_THREADS];*/
 
-void *PrintHello(void *threadid) {
-    printf("Hello World! It's me, thread #%ld!\n", (long) threadid);
+void *printHello(void *threadId) {
+    printf("Hello World! It's me, thread #%ld!\n", (long) threadId);
     pthread_exit(NULL);
 }
 
@@ -29,12 +29,10 @@ int main(int argc, char *argv[]) {
     pthread_t threads[NUM_THREADS];
 
     int returnCode;
+    for (long i = 0; i < NUM_THREADS; i++) {
+        printf("In main: creating thread %ld\n", i);
+        returnCode = pthread_create(&threads[i], NULL, printHello, (void *) i);
 
-    long threadCount;
-    for (threadCount = 0; threadCount < NUM_THREADS; threadCount++) {
-
-        printf("In main: creating thread %ld\n", threadCount);
-        returnCode = pthread_create(&threads[threadCount], NULL, PrintHello, (void *) threadCount);
         if (returnCode) {
             printf("ERROR; return code from pthread_create() is %d\n", returnCode);
             exit(-1);

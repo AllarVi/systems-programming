@@ -123,33 +123,6 @@ practice_5_threads/fast:
 	$(MAKE) -f CMakeFiles/practice_5_threads.dir/build.make CMakeFiles/practice_5_threads.dir/build
 .PHONY : practice_5_threads/fast
 
-hello.o: hello.c.o
-
-.PHONY : hello.o
-
-# target to build an object file
-hello.c.o:
-	$(MAKE) -f CMakeFiles/practice_5_threads.dir/build.make CMakeFiles/practice_5_threads.dir/hello.c.o
-.PHONY : hello.c.o
-
-hello.i: hello.c.i
-
-.PHONY : hello.i
-
-# target to preprocess a source file
-hello.c.i:
-	$(MAKE) -f CMakeFiles/practice_5_threads.dir/build.make CMakeFiles/practice_5_threads.dir/hello.c.i
-.PHONY : hello.c.i
-
-hello.s: hello.c.s
-
-.PHONY : hello.s
-
-# target to generate assembly for a file
-hello.c.s:
-	$(MAKE) -f CMakeFiles/practice_5_threads.dir/build.make CMakeFiles/practice_5_threads.dir/hello.c.s
-.PHONY : hello.c.s
-
 join.o: join.c.o
 
 .PHONY : join.o
@@ -177,32 +150,32 @@ join.c.s:
 	$(MAKE) -f CMakeFiles/practice_5_threads.dir/build.make CMakeFiles/practice_5_threads.dir/join.c.s
 .PHONY : join.c.s
 
-main.o: main.c.o
+threaded_hello.o: threaded_hello.c.o
 
-.PHONY : main.o
+.PHONY : threaded_hello.o
 
 # target to build an object file
-main.c.o:
-	$(MAKE) -f CMakeFiles/practice_5_threads.dir/build.make CMakeFiles/practice_5_threads.dir/main.c.o
-.PHONY : main.c.o
+threaded_hello.c.o:
+	$(MAKE) -f CMakeFiles/practice_5_threads.dir/build.make CMakeFiles/practice_5_threads.dir/threaded_hello.c.o
+.PHONY : threaded_hello.c.o
 
-main.i: main.c.i
+threaded_hello.i: threaded_hello.c.i
 
-.PHONY : main.i
+.PHONY : threaded_hello.i
 
 # target to preprocess a source file
-main.c.i:
-	$(MAKE) -f CMakeFiles/practice_5_threads.dir/build.make CMakeFiles/practice_5_threads.dir/main.c.i
-.PHONY : main.c.i
+threaded_hello.c.i:
+	$(MAKE) -f CMakeFiles/practice_5_threads.dir/build.make CMakeFiles/practice_5_threads.dir/threaded_hello.c.i
+.PHONY : threaded_hello.c.i
 
-main.s: main.c.s
+threaded_hello.s: threaded_hello.c.s
 
-.PHONY : main.s
+.PHONY : threaded_hello.s
 
 # target to generate assembly for a file
-main.c.s:
-	$(MAKE) -f CMakeFiles/practice_5_threads.dir/build.make CMakeFiles/practice_5_threads.dir/main.c.s
-.PHONY : main.c.s
+threaded_hello.c.s:
+	$(MAKE) -f CMakeFiles/practice_5_threads.dir/build.make CMakeFiles/practice_5_threads.dir/threaded_hello.c.s
+.PHONY : threaded_hello.c.s
 
 # Help Target
 help:
@@ -213,15 +186,12 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... practice_5_threads"
-	@echo "... hello.o"
-	@echo "... hello.i"
-	@echo "... hello.s"
 	@echo "... join.o"
 	@echo "... join.i"
 	@echo "... join.s"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... threaded_hello.o"
+	@echo "... threaded_hello.i"
+	@echo "... threaded_hello.s"
 .PHONY : help
 
 

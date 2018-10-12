@@ -4,9 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/hello.c" "/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/cmake-build-debug/CMakeFiles/practice_5_threads.dir/hello.c.o"
   "/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/join.c" "/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/cmake-build-debug/CMakeFiles/practice_5_threads.dir/join.c.o"
-  "/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/main.c" "/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/cmake-build-debug/CMakeFiles/practice_5_threads.dir/main.c.o"
+  "/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/threaded_hello.c" "/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/cmake-build-debug/CMakeFiles/practice_5_threads.dir/threaded_hello.c.o"
   )
 set(CMAKE_C_COMPILER_ID "AppleClang")
 

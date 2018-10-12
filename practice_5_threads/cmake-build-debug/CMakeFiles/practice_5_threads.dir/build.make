@@ -57,35 +57,22 @@ include CMakeFiles/practice_5_threads.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/practice_5_threads.dir/flags.make
 
-CMakeFiles/practice_5_threads.dir/main.c.o: CMakeFiles/practice_5_threads.dir/flags.make
-CMakeFiles/practice_5_threads.dir/main.c.o: ../main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/practice_5_threads.dir/main.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/practice_5_threads.dir/main.c.o   -c "/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/main.c"
+CMakeFiles/practice_5_threads.dir/threaded_hello.c.o: CMakeFiles/practice_5_threads.dir/flags.make
+CMakeFiles/practice_5_threads.dir/threaded_hello.c.o: ../threaded_hello.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/practice_5_threads.dir/threaded_hello.c.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/practice_5_threads.dir/threaded_hello.c.o   -c "/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/threaded_hello.c"
 
-CMakeFiles/practice_5_threads.dir/main.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/practice_5_threads.dir/main.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/main.c" > CMakeFiles/practice_5_threads.dir/main.c.i
+CMakeFiles/practice_5_threads.dir/threaded_hello.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/practice_5_threads.dir/threaded_hello.c.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/threaded_hello.c" > CMakeFiles/practice_5_threads.dir/threaded_hello.c.i
 
-CMakeFiles/practice_5_threads.dir/main.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/practice_5_threads.dir/main.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/main.c" -o CMakeFiles/practice_5_threads.dir/main.c.s
-
-CMakeFiles/practice_5_threads.dir/hello.c.o: CMakeFiles/practice_5_threads.dir/flags.make
-CMakeFiles/practice_5_threads.dir/hello.c.o: ../hello.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/practice_5_threads.dir/hello.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/practice_5_threads.dir/hello.c.o   -c "/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/hello.c"
-
-CMakeFiles/practice_5_threads.dir/hello.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/practice_5_threads.dir/hello.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/hello.c" > CMakeFiles/practice_5_threads.dir/hello.c.i
-
-CMakeFiles/practice_5_threads.dir/hello.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/practice_5_threads.dir/hello.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/hello.c" -o CMakeFiles/practice_5_threads.dir/hello.c.s
+CMakeFiles/practice_5_threads.dir/threaded_hello.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/practice_5_threads.dir/threaded_hello.c.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/threaded_hello.c" -o CMakeFiles/practice_5_threads.dir/threaded_hello.c.s
 
 CMakeFiles/practice_5_threads.dir/join.c.o: CMakeFiles/practice_5_threads.dir/flags.make
 CMakeFiles/practice_5_threads.dir/join.c.o: ../join.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/practice_5_threads.dir/join.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/practice_5_threads.dir/join.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/practice_5_threads.dir/join.c.o   -c "/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/join.c"
 
 CMakeFiles/practice_5_threads.dir/join.c.i: cmake_force
@@ -98,19 +85,17 @@ CMakeFiles/practice_5_threads.dir/join.c.s: cmake_force
 
 # Object files for target practice_5_threads
 practice_5_threads_OBJECTS = \
-"CMakeFiles/practice_5_threads.dir/main.c.o" \
-"CMakeFiles/practice_5_threads.dir/hello.c.o" \
+"CMakeFiles/practice_5_threads.dir/threaded_hello.c.o" \
 "CMakeFiles/practice_5_threads.dir/join.c.o"
 
 # External object files for target practice_5_threads
 practice_5_threads_EXTERNAL_OBJECTS =
 
-practice_5_threads: CMakeFiles/practice_5_threads.dir/main.c.o
-practice_5_threads: CMakeFiles/practice_5_threads.dir/hello.c.o
+practice_5_threads: CMakeFiles/practice_5_threads.dir/threaded_hello.c.o
 practice_5_threads: CMakeFiles/practice_5_threads.dir/join.c.o
 practice_5_threads: CMakeFiles/practice_5_threads.dir/build.make
 practice_5_threads: CMakeFiles/practice_5_threads.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable practice_5_threads"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/Users/allarviinamae/EduWorkspace/(ITI8510)SystemsProgramming/practice_5_threads/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable practice_5_threads"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/practice_5_threads.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
