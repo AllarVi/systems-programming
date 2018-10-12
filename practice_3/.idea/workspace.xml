@@ -12,11 +12,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7651ccc7-5f61-4b2a-a8cc-b6d7e1263f57" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../practice_4_signals/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../practice_4_signals/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../practice_5_threads/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../practice_5_threads/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../practice_5_threads/join" beforeDir="false" afterPath="$PROJECT_DIR$/../practice_5_threads/join" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../practice_5_threads/join.c" beforeDir="false" afterPath="$PROJECT_DIR$/../practice_5_threads/join.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,7 +26,7 @@
     <session id="-2104463376">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="5" />
+          <entry key="project.closed" value="6" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.12" value="1" />
           <entry key="project.open.time.17" value="1" />
