@@ -7,12 +7,12 @@
 #include <zconf.h>
 #include <memory.h>
 
-// Example 1
-// ./main -f boring.txt
+// Example 1 - File
+// ./main boring.txt
 // File type:                regular file
 
-// Example 2
-// ./main -f .
+// Example 2 - Directory
+// ./main .
 // File type:                directory
 
 void printFileType(struct stat *fileStat);
