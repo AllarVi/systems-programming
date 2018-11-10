@@ -1,4 +1,6 @@
 **/.idea/**
+**/cmake-build-debug/**
+
 .idea/
 .idea/**
-practice_3/.idea/
+hufmann/hufmann-algorithm/cmake-build-debug/
