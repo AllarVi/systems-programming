@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "map.h"
+#include "tree.h"
 
 void printFileType(struct stat *fileStat);
 
@@ -55,6 +56,9 @@ int main(int argc, char **argv) {
 
     int numOfDifferentChars = getNumOfDiffChars(fileCharFreq);
     printf("Num of different characters: %d\n", numOfDifferentChars);
+
+    struct forest *forest = makeForest(fileCharFreq);
+    printf("Forest size: %d\n", forest->size);
 
     return 0;
 }

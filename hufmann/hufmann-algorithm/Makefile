@@ -1,2 +1,2 @@
-hellomake: main.c map.c map.h
-	gcc -o main main.c map.c -I.
+hufmann: main.c map.c map.h tree.c tree.h
+	gcc -o hufmann main.c map.c tree.c -I.

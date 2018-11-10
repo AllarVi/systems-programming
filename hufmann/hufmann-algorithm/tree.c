@@ -5,5 +5,14 @@
 #include "tree.h"
 
 struct forest *makeForest(struct map *fileCharFreq) {
-    struct forest *newForest[1];
+    int forestSize = getNumOfDiffChars(fileCharFreq);
+
+    struct forest *newForest = malloc(sizeof(struct forest));
+    newForest->size = forestSize;
+    newForest->treeList = malloc(sizeof(struct treeList *) * forestSize);
+
+    for (int i = 0; i < forestSize; i++)
+        newForest->treeList[i] = NULL;
+
+    return newForest;
 };

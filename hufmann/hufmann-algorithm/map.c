@@ -8,9 +8,9 @@
 #include <stdlib.h>
 
 struct map *createMap(int size) {
-    struct map *newMap = (struct map *) malloc(sizeof(struct map));
+    struct map *newMap = malloc(sizeof(struct map));
     newMap->size = size;
-    newMap->list = (struct node **) malloc(sizeof(struct node *) * size);
+    newMap->list = malloc(sizeof(struct node *) * size);
 
     for (int i = 0; i < size; i++)
         newMap->list[i] = NULL;
@@ -46,9 +46,9 @@ void put(struct map *myMap, int key, int val) {
     }
 
     // allocating space in memory with the size of struct node
-    // casting that space into struct node
+    // Note: malloc casts that space into struct node automatically
     // returning pointer to new node
-    struct node *newNode = (struct node *) malloc(sizeof(struct node));
+    struct node *newNode = malloc(sizeof(struct node));
 
     // reach here in case no previous node found
     newNode->key = key;
