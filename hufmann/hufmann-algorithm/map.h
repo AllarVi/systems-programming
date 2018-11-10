@@ -24,7 +24,9 @@ void put(struct map *myMap, int key, int val);
 
 int get(struct map *myMap, int key);
 
-int getNumOfDiffChars(const struct map *fileCharFreq);
+int getEntriesTotal(const struct map *fileCharFreq);
+
+struct node **getEntries(const struct map *fileCharFreq);
 
 #endif //HUFMANN_ALGORITHM_MAP_H
 

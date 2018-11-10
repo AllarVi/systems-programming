@@ -12,8 +12,8 @@ struct tree {
     /* if left==0, it is a leaf. Otherwise it has two branches */
     struct tree *left;
     struct tree *right;   /* not  in a leaf */
-    int c;              /* only in a leaf */
-    int freq;            /* occurence rate of the tree */
+    int c;                /* only in a leaf */
+    int freq;             /* occurence rate of the tree */
 };
 
 struct forest *makeForest(struct map *fileCharFreq);

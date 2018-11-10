@@ -74,7 +74,7 @@ int get(struct map *myMap, int key) {
     return -1;
 }
 
-int getNumOfDiffChars(const struct map *fileCharFreq) {
+int getEntriesTotal(const struct map *fileCharFreq) {
     int fileSize = fileCharFreq->size;
     int numOfDifferentChars = 0;
 
@@ -86,4 +86,20 @@ int getNumOfDiffChars(const struct map *fileCharFreq) {
         }
     }
     return numOfDifferentChars;
+}
+
+struct node **getEntries(const struct map *fileCharFreq) {
+    int entriesTotal = getEntriesTotal(fileCharFreq);
+
+    struct node **entries = malloc(sizeof(struct node *) * entriesTotal);
+
+    int j = 0;
+    for (int i = 0; i < fileCharFreq->size; i++) {
+        if (fileCharFreq->list[i] != NULL) {
+            entries[j] = fileCharFreq->list[i];
+            j++;
+        }
+    }
+
+    return entries;
 }

@@ -2,6 +2,7 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "map.h"
 #include "tree.h"
 
@@ -12,6 +13,10 @@ void printFileSize(struct stat *fileStat);
 void readFileByChar(FILE *filePtr, char **fileContents);
 
 void groupByChars(size_t fileSize, const char *fileContents, struct map **map);
+
+void swap(struct tree **xp, struct tree **yp);
+
+void bubbleSort(struct forest *forest);
 
 int main(int argc, char **argv) {
     if (argc != 2) {
@@ -54,13 +59,43 @@ int main(int argc, char **argv) {
     printf("space:     %d\n", get(fileCharFreq, ' '));
     printf("new lines: %d\n", get(fileCharFreq, '\n'));
 
-    int numOfDifferentChars = getNumOfDiffChars(fileCharFreq);
+    int numOfDifferentChars = getEntriesTotal(fileCharFreq);
     printf("Num of different characters: %d\n", numOfDifferentChars);
 
     struct forest *forest = makeForest(fileCharFreq);
     printf("Forest size: %d\n", forest->size);
 
+    bubbleSort(forest);
+
+    printf("Forest min: %c %d\n", forest->treeList[0]->c, forest->treeList[0]->freq);
+    printf("Forest max: %c %d\n", forest->treeList[forest->size - 1]->c, forest->treeList[forest->size - 1]->freq);
+
     return 0;
+}
+
+void swap(struct tree **xp, struct tree **yp) {
+    struct tree *temp = *xp;
+    *xp = *yp;
+    *yp = temp;
+}
+
+void bubbleSort(struct forest *forest) {
+    int forestSize = forest->size;
+    bool swapped;
+
+    for (int i = 0; i < forestSize - 1; i++) {
+        swapped = false;
+        for (int j = 0; j < forestSize - i - 1; j++) {
+            if (forest->treeList[j]->freq > forest->treeList[j + 1]->freq) {
+                swap(&forest->treeList[j], &forest->treeList[j + 1]);
+                swapped = true;
+            }
+        }
+
+        // IF no two elements were swapped by inner loop, then break
+        if (swapped == false)
+            break;
+    }
 }
 
 void groupByChars(size_t fileSize, const char *fileContents, struct map **map) {
