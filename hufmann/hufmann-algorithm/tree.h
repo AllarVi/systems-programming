@@ -18,4 +18,8 @@ struct tree {
 
 struct forest *makeForest(struct map *fileCharFreq);
 
+void swap(struct tree **xp, struct tree **yp);
+
+void bubbleSort(struct forest *forest);
+
 #endif //HUFMANN_ALGORITHM_TREE_H

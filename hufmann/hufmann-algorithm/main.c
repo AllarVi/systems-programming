@@ -2,7 +2,6 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 #include "map.h"
 #include "tree.h"
 
@@ -14,9 +13,15 @@ void readFileByChar(FILE *filePtr, char **fileContents);
 
 void groupByChars(size_t fileSize, const char *fileContents, struct map **map);
 
-void swap(struct tree **xp, struct tree **yp);
+void getTwoMinTrees(struct forest *forest, struct tree **minTree1, struct tree **minTree2);
 
-void bubbleSort(struct forest *forest);
+struct tree *combineTrees(struct tree *minTree1, struct tree *minTree2);
+
+struct forest *packTree(struct forest *forest);
+
+struct forest *updateForest(const struct forest *forest, struct tree *combinedTree);
+
+void printSizeValidation(size_t fileSize, const struct forest *packedForest);
 
 int main(int argc, char **argv) {
     if (argc != 2) {
@@ -48,7 +53,6 @@ int main(int argc, char **argv) {
     readFileByChar(filePtr, &fileContents);
 
     struct map *fileCharFreq = createMap((int) fileSize);
-    put(fileCharFreq, 'a', 10);
 
     groupByChars(fileSize, fileContents, &fileCharFreq);
 
@@ -63,40 +67,86 @@ int main(int argc, char **argv) {
     printf("Num of different characters: %d\n", numOfDifferentChars);
 
     struct forest *forest = makeForest(fileCharFreq);
+
     printf("Forest size: %d\n", forest->size);
 
-    bubbleSort(forest);
+    struct forest *packedForest = packTree(forest);
 
-    printf("Forest min: %c %d\n", forest->treeList[0]->c, forest->treeList[0]->freq);
-    printf("Forest max: %c %d\n", forest->treeList[forest->size - 1]->c, forest->treeList[forest->size - 1]->freq);
+    printSizeValidation(fileSize, packedForest);
 
     return 0;
 }
 
-void swap(struct tree **xp, struct tree **yp) {
-    struct tree *temp = *xp;
-    *xp = *yp;
-    *yp = temp;
-}
-
-void bubbleSort(struct forest *forest) {
-    int forestSize = forest->size;
-    bool swapped;
-
-    for (int i = 0; i < forestSize - 1; i++) {
-        swapped = false;
-        for (int j = 0; j < forestSize - i - 1; j++) {
-            if (forest->treeList[j]->freq > forest->treeList[j + 1]->freq) {
-                swap(&forest->treeList[j], &forest->treeList[j + 1]);
-                swapped = true;
-            }
-        }
-
-        // IF no two elements were swapped by inner loop, then break
-        if (swapped == false)
-            break;
+void printSizeValidation(size_t fileSize, const struct forest *packedForest) {
+    if (fileSize == packedForest->treeList[0]->freq) {
+        printf("<INFO> Packed forest size matches file size\n");
+    } else {
+        printf("<WARNING> Packed forest size does not match file size!\n");
     }
 }
+
+struct forest *packTree(struct forest *forest) {
+    struct forest *currentForest = forest;
+
+    while (currentForest->size > 1) {
+        struct tree *minTree1;
+        struct tree *minTree2;
+        getTwoMinTrees(currentForest, &minTree1, &minTree2);
+
+        if (minTree2 != NULL) {
+            // printf("Forest min: %c %d\n", minTree1->c, minTree1->freq);
+            // printf("Forest min: %c %d\n", minTree2->c, minTree2->freq);
+
+            struct tree *combinedTree = combineTrees(minTree1, minTree2);
+
+            // printf("Combined tree: %c %d\n", combinedTree->c, combinedTree->freq);
+
+            currentForest = updateForest(currentForest, combinedTree);
+
+            // printf("<DEBUG> Updated forest size: %d\n", currentForest->size);
+        }
+    }
+
+    return currentForest;
+}
+
+struct forest *updateForest(const struct forest *forest, struct tree *combinedTree) {
+    int newSize = forest->size - 1;
+
+    struct forest *updatedForest = malloc(sizeof(struct forest));
+    updatedForest->size = newSize;
+    updatedForest->treeList = malloc(sizeof(struct treeList *) * newSize);
+
+    updatedForest->treeList[0] = combinedTree;
+    for (int i = 1; i < newSize; i++) {
+        updatedForest->treeList[i] = forest->treeList[i + 1];
+    }
+
+    return updatedForest;
+}
+
+struct tree *combineTrees(struct tree *minTree1, struct tree *minTree2) {
+    struct tree *combinedTree = malloc(sizeof(struct tree));
+    combinedTree->left = minTree1;
+    combinedTree->right = minTree2;
+    combinedTree->c = 0;
+    combinedTree->freq = minTree1->freq + minTree2->freq;
+    return combinedTree;
+}
+
+void getTwoMinTrees(struct forest *forest, struct tree **minTree1, struct tree **minTree2) {
+    if (forest->size < 2) {
+        (*minTree1) = forest->treeList[0];
+        (*minTree2) = NULL;
+        return;
+    }
+
+    bubbleSort(forest);
+
+    (*minTree1) = forest->treeList[0];
+    (*minTree2) = forest->treeList[1];
+}
+
 
 void groupByChars(size_t fileSize, const char *fileContents, struct map **map) {
     struct map *fileCharFreq = *map;
@@ -122,6 +172,7 @@ void readFileByChar(FILE *filePtr, char **fileContents) {
         contents[n++] = (char) c;
     }
 
+    printf("Num of characters: %d\n", (int) n);
     // terminate with the null character
     contents[n] = '\0';
 }
