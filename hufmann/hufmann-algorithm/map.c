@@ -7,17 +7,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct node {
-    int key;
-    int val;
-    struct node *next;
-};
-
-struct map {
-    int size;
-    struct node **list; // list of nodes
-};
-
 struct map *createMap(int size) {
     struct map *newMap = (struct map *) malloc(sizeof(struct map));
     newMap->size = size;
@@ -83,4 +72,18 @@ int get(struct map *myMap, int key) {
     }
 
     return -1;
+}
+
+int getNumOfDiffChars(const struct map *fileCharFreq) {
+    int fileSize = fileCharFreq->size;
+    int numOfDifferentChars = 0;
+
+    for (int i = 0; i < fileSize; i++) {
+        if (fileCharFreq->list[i] != NULL) {
+            // struct node *theNode = fileCharFreq->list[i];
+            // printf("Character: %d\n", theNode->key);
+            numOfDifferentChars++;
+        }
+    }
+    return numOfDifferentChars;
 }
