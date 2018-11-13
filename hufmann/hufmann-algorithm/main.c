@@ -5,6 +5,10 @@
 #include "map.h"
 #include "tree.h"
 
+// Tree traversal inspiration: https://www.geeksforgeeks.org/given-a-binary-tree-print-all-root-to-leaf-paths/
+
+static const int CHAR_PATH_LEN = 500;
+
 void printFileType(struct stat *fileStat);
 
 void printFileSize(struct stat *fileStat);
@@ -22,6 +26,13 @@ struct forest *packTree(struct forest *forest);
 struct forest *updateForest(const struct forest *forest, struct tree *combinedTree);
 
 void printSizeValidation(size_t fileSize, const struct forest *packedForest);
+
+// Tree traversal
+void traversePaths(struct tree *tree, char **encodingTable);
+
+void recTraversePaths(struct tree *tree, int data, char **encodingTable, int *path, int pathLen);
+
+void addPath(const int *ints, int len, int c, char **encodingTable);
 
 int main(int argc, char **argv) {
     if (argc != 2) {
@@ -74,7 +85,72 @@ int main(int argc, char **argv) {
 
     printSizeValidation(fileSize, packedForest);
 
+    struct tree *encodingTree = packedForest->treeList[0];
+
+    size_t nb_menu = 256;
+
+    char **encodingTable = calloc(nb_menu + 1, sizeof(char *));
+    if (!encodingTable) {
+        perror("calloc menu");
+        exit(EXIT_FAILURE);
+    };
+
+    traversePaths(encodingTree, encodingTable);
+
+    int count = 0;
+    for (int i = 0; i < 256; i++) {
+        if (encodingTable[i] != NULL) {
+            printf("Table %d %c, %s\n", i, i, encodingTable[i]);
+            count++;
+        }
+    }
+    printf("Elements in table: %d\n", count);
+
     return 0;
+}
+
+void traversePaths(struct tree *tree, char **encodingTable) {
+    int path[CHAR_PATH_LEN];
+
+    recTraversePaths(tree, -1, encodingTable, path, 0);
+}
+
+void recTraversePaths(struct tree *tree, int data, char **encodingTable, int *path, int pathLen) {
+    if (tree == NULL)
+        return;
+
+    // append this node to the path array
+    if (data != -1) {
+        path[pathLen] = data;
+        pathLen++;
+    }
+
+    if (tree->left == NULL && tree->right == NULL) {
+        addPath(path, pathLen, tree->c, encodingTable);
+    } else {
+        recTraversePaths(tree->left, 0, encodingTable, path, pathLen);
+        recTraversePaths(tree->right, 1, encodingTable, path, pathLen);
+    }
+}
+
+
+void addPath(const int *ints, const int len, const int c, char **encodingTable) {
+    // printf("%c: ", c);
+
+    // Int array to string
+    char encoding[len];
+    int n = 0;
+    for (int i = 0; i < len; i++) {
+        n += sprintf (&encoding[n], "%d", ints[i]);
+    }
+    // printf("%s\n", key);
+
+    // New pointer for string
+    char *key;
+    key = (char *) malloc(len * sizeof(char));
+    strcpy(key, encoding);
+
+    encodingTable[c] = key;
 }
 
 void printSizeValidation(size_t fileSize, const struct forest *packedForest) {
