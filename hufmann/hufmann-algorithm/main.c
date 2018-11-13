@@ -4,6 +4,7 @@
 #include <string.h>
 #include "map.h"
 #include "tree.h"
+#include "binfile_io.h"
 
 #define CHAR 256
 
@@ -35,6 +36,8 @@ void traversePaths(struct tree *tree, char **encodingTable, int *maxPathLen);
 void recTraversePaths(struct tree *tree, int data, char **encodingTable, int *path, int pathLen, int *maxPathLen);
 
 void addPath(const int *ints, int len, int c, char **encodingTable);
+
+void encode(const char *fileContents, char **encodingTable);
 
 int main(int argc, char **argv) {
     if (argc != 2) {
@@ -110,10 +113,51 @@ int main(int argc, char **argv) {
     }
     printf("Elements in table: %d, max path length: %d\n", count, maxPathLen);
 
-    // TODO: Add EOF char
+    // INPUT
+    struct BITFILE *inputBitFile = malloc(sizeof(struct BITFILE));
 
+    inputBitFile->filePtr = fopen(filePath, "rb"); // Open for reading in binary mode.
+
+    int *counter = (int *) malloc(sizeof(int));
+    *counter = -1;
+    inputBitFile->counter = counter;
+
+    int cnt = 0;
+    int bitsInFile = (int) fileSize * 8;
+    for (int i = 0; i < bitsInFile; i++) {
+        int aBit = getBit(inputBitFile);
+        printf("%d", aBit);
+        if (cnt == 7) {
+            printf("\n");
+            cnt = 0;
+        } else {
+            cnt++;
+        }
+    }
+    printf("\n");
+    fclose(inputBitFile->filePtr);
+
+    // OUTPUT
+    // encode(fileContents, encodingTable);
 
     return 0;
+}
+
+void encode(const char *fileContents, char **encodingTable) {
+    struct BITFILE *outputBitFile = malloc(sizeof(struct BITFILE));
+
+    outputBitFile->filePtr = fopen("output.bin", "wb");
+
+    int *outputBitFileCounter = (int *) malloc(sizeof(int));
+    *outputBitFileCounter = -1;
+    outputBitFile->counter = outputBitFileCounter;
+
+    char *encodedChar = encodingTable[fileContents[0]];
+    printf("encodedChar %s\n", encodedChar);
+
+    putBits(encodingTable, encodedChar, outputBitFile);
+
+    fclose(outputBitFile->filePtr);
 }
 
 void traversePaths(struct tree *tree, char **encodingTable, int *maxPathLen) {
