@@ -5,6 +5,8 @@
 #include "map.h"
 #include "tree.h"
 
+#define CHAR 256
+
 // Tree traversal inspiration: https://www.geeksforgeeks.org/given-a-binary-tree-print-all-root-to-leaf-paths/
 
 static const int CHAR_PATH_LEN = 500;
@@ -28,9 +30,9 @@ struct forest *updateForest(const struct forest *forest, struct tree *combinedTr
 void printSizeValidation(size_t fileSize, const struct forest *packedForest);
 
 // Tree traversal
-void traversePaths(struct tree *tree, char **encodingTable);
+void traversePaths(struct tree *tree, char **encodingTable, int *maxPathLen);
 
-void recTraversePaths(struct tree *tree, int data, char **encodingTable, int *path, int pathLen);
+void recTraversePaths(struct tree *tree, int data, char **encodingTable, int *path, int pathLen, int *maxPathLen);
 
 void addPath(const int *ints, int len, int c, char **encodingTable);
 
@@ -87,35 +89,40 @@ int main(int argc, char **argv) {
 
     struct tree *encodingTree = packedForest->treeList[0];
 
-    size_t nb_menu = 256;
+    size_t nb_menu = CHAR;
 
     char **encodingTable = calloc(nb_menu + 1, sizeof(char *));
     if (!encodingTable) {
-        perror("calloc menu");
+        perror("calloc encodingTable");
         exit(EXIT_FAILURE);
     };
 
-    traversePaths(encodingTree, encodingTable);
+    int maxPathLen = 0;
+    traversePaths(encodingTree, encodingTable, &maxPathLen);
 
+    printf("Encoding table: \n");
     int count = 0;
-    for (int i = 0; i < 256; i++) {
+    for (int i = 0; i < CHAR; i++) {
         if (encodingTable[i] != NULL) {
-            printf("Table %d %c, %s\n", i, i, encodingTable[i]);
+            printf("%d   %c          %s\n", i, i, encodingTable[i]);
             count++;
         }
     }
-    printf("Elements in table: %d\n", count);
+    printf("Elements in table: %d, max path length: %d\n", count, maxPathLen);
+
+    // TODO: Add EOF char
+
 
     return 0;
 }
 
-void traversePaths(struct tree *tree, char **encodingTable) {
+void traversePaths(struct tree *tree, char **encodingTable, int *maxPathLen) {
     int path[CHAR_PATH_LEN];
 
-    recTraversePaths(tree, -1, encodingTable, path, 0);
+    recTraversePaths(tree, -1, encodingTable, path, 0, maxPathLen);
 }
 
-void recTraversePaths(struct tree *tree, int data, char **encodingTable, int *path, int pathLen) {
+void recTraversePaths(struct tree *tree, int data, char **encodingTable, int *path, int pathLen, int *maxPathLen) {
     if (tree == NULL)
         return;
 
@@ -126,24 +133,23 @@ void recTraversePaths(struct tree *tree, int data, char **encodingTable, int *pa
     }
 
     if (tree->left == NULL && tree->right == NULL) {
+        if (*maxPathLen < pathLen) {
+            *maxPathLen = pathLen;
+        }
         addPath(path, pathLen, tree->c, encodingTable);
     } else {
-        recTraversePaths(tree->left, 0, encodingTable, path, pathLen);
-        recTraversePaths(tree->right, 1, encodingTable, path, pathLen);
+        recTraversePaths(tree->left, 0, encodingTable, path, pathLen, maxPathLen);
+        recTraversePaths(tree->right, 1, encodingTable, path, pathLen, maxPathLen);
     }
 }
 
-
 void addPath(const int *ints, const int len, const int c, char **encodingTable) {
-    // printf("%c: ", c);
-
     // Int array to string
     char encoding[len];
     int n = 0;
     for (int i = 0; i < len; i++) {
-        n += sprintf (&encoding[n], "%d", ints[i]);
+        n += sprintf(&encoding[n], "%d", ints[i]);
     }
-    // printf("%s\n", key);
 
     // New pointer for string
     char *key;
