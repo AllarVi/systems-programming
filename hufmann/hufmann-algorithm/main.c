@@ -37,7 +37,9 @@ void recTraversePaths(struct tree *tree, int data, char **encodingTable, int *pa
 
 void addPath(const int *ints, int len, int c, char **encodingTable);
 
-void encode(const char *fileContents, char **encodingTable);
+void encode(const char *fileContents, size_t fileSize, char *endOfFileChar, char **encodingTable);
+
+void decode(const char *filePath, size_t fileSize);
 
 int main(int argc, char **argv) {
     if (argc != 2) {
@@ -114,6 +116,21 @@ int main(int argc, char **argv) {
     printf("Elements in table: %d, max path length: %d\n", count, maxPathLen);
 
     // INPUT
+    decode(filePath, fileSize);
+
+    // OUTPUT
+    char *endOfFileChar = (char *) malloc((maxPathLen + 2) * sizeof(char)); // max length + one more + \0
+    for (int i = 0; i < (maxPathLen + 1); i++) {
+        endOfFileChar[i] = '1';
+    }
+    endOfFileChar[maxPathLen + 1] = '\0';
+
+    encode(fileContents, fileSize, endOfFileChar, encodingTable);
+
+    return 0;
+}
+
+void decode(const char *filePath, size_t fileSize) {
     struct BITFILE *inputBitFile = malloc(sizeof(struct BITFILE));
 
     inputBitFile->filePtr = fopen(filePath, "rb"); // Open for reading in binary mode.
@@ -136,26 +153,26 @@ int main(int argc, char **argv) {
     }
     printf("\n");
     fclose(inputBitFile->filePtr);
-
-    // OUTPUT
-    // encode(fileContents, encodingTable);
-
-    return 0;
 }
 
-void encode(const char *fileContents, char **encodingTable) {
-    struct BITFILE *outputBitFile = malloc(sizeof(struct BITFILE));
+void encode(const char *fileContents, size_t fileSize, char *endOfFileChar, char **encodingTable) {
+    struct OUTPUT_BITFILE *outputBitFile = malloc(sizeof(struct BITFILE));
+    char *emptyBuffer = (char *) malloc(sizeof(char));
+    emptyBuffer[0] = '\0';
 
+    outputBitFile->buffer = emptyBuffer;
     outputBitFile->filePtr = fopen("output.bin", "wb");
 
-    int *outputBitFileCounter = (int *) malloc(sizeof(int));
-    *outputBitFileCounter = -1;
-    outputBitFile->counter = outputBitFileCounter;
+    for (int i = 0; i < fileSize; i++) {
+        char *encodedChar = encodingTable[fileContents[i]];
+        // printf("encodedChar %s\n", encodedChar);
 
-    char *encodedChar = encodingTable[fileContents[0]];
-    printf("encodedChar %s\n", encodedChar);
-
-    putBits(encodingTable, encodedChar, outputBitFile);
+        putBits(encodedChar, outputBitFile);
+    }
+    printf("End of file bits %s\n", endOfFileChar);
+    if (putBits(endOfFileChar, outputBitFile) == 1) {
+        forceFlush(outputBitFile);
+    }
 
     fclose(outputBitFile->filePtr);
 }

@@ -14,11 +14,18 @@ struct BITFILE {
     FILE *filePtr;
 };
 
+struct OUTPUT_BITFILE {
+    char *buffer;
+    FILE *filePtr;
+};
+
 struct BITFILE *bitOpen(FILE *f);        /*initialise bit input or output*/
 
 int getBit(struct BITFILE *bitFile);     /*get one bit from bf->buffer */
 
-void putBits(char **encodingTable, char *encodedChar, struct BITFILE *bitFile);
+int putBits(char *encodedChar, struct OUTPUT_BITFILE *bitFile);
+
+void forceFlush(struct OUTPUT_BITFILE *bitFile);
 
 void closeOutput(struct BITFILE *bf);        /*finish writing. Flush the last bits to bf->file*/
 
