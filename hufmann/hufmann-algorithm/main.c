@@ -2,6 +2,7 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <string.h>
+#include <getopt.h>
 #include "map.h"
 #include "tree.h"
 #include "binfile_io.h"
@@ -37,19 +38,42 @@ void recTraversePaths(struct tree *tree, int data, char **encodingTable, int *pa
 
 void addPath(const int *ints, int len, int c, char **encodingTable);
 
-void encode(const char *fileContents, size_t fileSize, char *endOfFileChar, char **encodingTable);
+void encode(const char *fileContents, size_t fileSize, char *endOfFileChar, char *outputFilePath, char **encodingTable);
 
 void decode(const char *filePath, size_t fileSize);
 
 int main(int argc, char **argv) {
-    if (argc != 2) {
-        printf("Second program argument not specified!\n");
+    if (argc < 3) {
+        printf("Two program arguments should be given at least!\n");
         exit(EXIT_SUCCESS);
     }
 
-    char *filePath = argv[1];
+    int decodeFlag = 0;
+    int c;
 
-    printf("filePath %s\n", filePath);
+    while ((c = getopt(argc, argv, "d::")) != -1)
+        switch (c) {
+            case 'd':
+                decodeFlag = 1;
+                break;
+            default:
+                abort();
+        }
+
+    printf("<INFO> decodeFlag: %d\n", decodeFlag);
+
+    char *filePath;
+    char *outFilePath;
+    if (decodeFlag == 1) {
+        filePath = argv[2];
+        outFilePath = argv[3];
+    } else {
+        filePath = argv[1];
+        outFilePath = argv[2];
+    }
+
+    printf("<INFO> Input file: %s\n", filePath);
+    printf("<INFO> Output file: %s\n", outFilePath);
 
     struct stat fileStat;
     if (stat(filePath, &fileStat) == -1) { // Call stat() and save results to fileStat
@@ -74,29 +98,20 @@ int main(int argc, char **argv) {
 
     groupByChars(fileSize, fileContents, &fileCharFreq);
 
-    printf("a:         %d\n", get(fileCharFreq, 'a'));
-    printf("b:         %d\n", get(fileCharFreq, 'b'));
-    printf("c:         %d\n", get(fileCharFreq, 'c'));
-    printf("d:         %d\n", get(fileCharFreq, 'd'));
-    printf("space:     %d\n", get(fileCharFreq, ' '));
-    printf("new lines: %d\n", get(fileCharFreq, '\n'));
+    // printf("a:         %d\n", get(fileCharFreq, 'a'));
 
     int numOfDifferentChars = getEntriesTotal(fileCharFreq);
     printf("Num of different characters: %d\n", numOfDifferentChars);
 
     struct forest *forest = makeForest(fileCharFreq);
-
     printf("Forest size: %d\n", forest->size);
 
     struct forest *packedForest = packTree(forest);
-
     printSizeValidation(fileSize, packedForest);
 
     struct tree *encodingTree = packedForest->treeList[0];
 
-    size_t nb_menu = CHAR;
-
-    char **encodingTable = calloc(nb_menu + 1, sizeof(char *));
+    char **encodingTable = calloc(CHAR + 1, sizeof(char *));
     if (!encodingTable) {
         perror("calloc encodingTable");
         exit(EXIT_FAILURE);
@@ -113,19 +128,19 @@ int main(int argc, char **argv) {
             count++;
         }
     }
-    printf("Elements in table: %d, max path length: %d\n", count, maxPathLen);
+    printf("Encoding table size: %d, max path length: %d\n", count, maxPathLen);
 
-    // INPUT
-    decode(filePath, fileSize);
+    if (decodeFlag == 1) {
+        decode(filePath, fileSize);
+    } else {
+        char *endOfFileChar = (char *) malloc((maxPathLen + 2) * sizeof(char)); // max length + one more + \0
+        for (int i = 0; i < (maxPathLen + 1); i++) {
+            endOfFileChar[i] = '1';
+        }
+        endOfFileChar[maxPathLen + 1] = '\0';
 
-    // OUTPUT
-    char *endOfFileChar = (char *) malloc((maxPathLen + 2) * sizeof(char)); // max length + one more + \0
-    for (int i = 0; i < (maxPathLen + 1); i++) {
-        endOfFileChar[i] = '1';
+        encode(fileContents, fileSize, endOfFileChar, outFilePath, encodingTable);
     }
-    endOfFileChar[maxPathLen + 1] = '\0';
-
-    encode(fileContents, fileSize, endOfFileChar, encodingTable);
 
     return 0;
 }
@@ -143,9 +158,10 @@ void decode(const char *filePath, size_t fileSize) {
     int bitsInFile = (int) fileSize * 8;
     for (int i = 0; i < bitsInFile; i++) {
         int aBit = getBit(inputBitFile);
-        printf("%d", aBit);
+        // printf("%d", aBit);
+
         if (cnt == 7) {
-            printf("\n");
+            // printf("\n");
             cnt = 0;
         } else {
             cnt++;
@@ -155,13 +171,14 @@ void decode(const char *filePath, size_t fileSize) {
     fclose(inputBitFile->filePtr);
 }
 
-void encode(const char *fileContents, size_t fileSize, char *endOfFileChar, char **encodingTable) {
+void
+encode(const char *fileContents, size_t fileSize, char *endOfFileChar, char *outputFilePath, char **encodingTable) {
     struct OUTPUT_BITFILE *outputBitFile = malloc(sizeof(struct BITFILE));
     char *emptyBuffer = (char *) malloc(sizeof(char));
     emptyBuffer[0] = '\0';
 
     outputBitFile->buffer = emptyBuffer;
-    outputBitFile->filePtr = fopen("output.bin", "wb");
+    outputBitFile->filePtr = fopen(outputFilePath, "wb");
 
     for (int i = 0; i < fileSize; i++) {
         char *encodedChar = encodingTable[fileContents[i]];
@@ -169,7 +186,7 @@ void encode(const char *fileContents, size_t fileSize, char *endOfFileChar, char
 
         putBits(encodedChar, outputBitFile);
     }
-    printf("End of file bits %s\n", endOfFileChar);
+    printf("End of file char: %s\n", endOfFileChar);
     if (putBits(endOfFileChar, outputBitFile) == 1) {
         forceFlush(outputBitFile);
     }
@@ -237,16 +254,9 @@ struct forest *packTree(struct forest *forest) {
         getTwoMinTrees(currentForest, &minTree1, &minTree2);
 
         if (minTree2 != NULL) {
-            // printf("Forest min: %c %d\n", minTree1->c, minTree1->freq);
-            // printf("Forest min: %c %d\n", minTree2->c, minTree2->freq);
-
             struct tree *combinedTree = combineTrees(minTree1, minTree2);
 
-            // printf("Combined tree: %c %d\n", combinedTree->c, combinedTree->freq);
-
             currentForest = updateForest(currentForest, combinedTree);
-
-            // printf("<DEBUG> Updated forest size: %d\n", currentForest->size);
         }
     }
 
@@ -321,12 +331,12 @@ void readFileByChar(FILE *filePtr, char **fileContents) {
 }
 
 void printFileSize(struct stat *fileStat) {
-    printf("File size:                %lld bytes\n",
+    printf("<INFO> File size:                %lld bytes\n",
            (long long) (*fileStat).st_size);
 }
 
 void printFileType(struct stat *fileStat) {
-    printf("File type:                ");
+    printf("<INFO> File type:                ");
 
     switch ((*fileStat).st_mode & S_IFMT) { // Compare with type of file mask
         case S_IFBLK:
