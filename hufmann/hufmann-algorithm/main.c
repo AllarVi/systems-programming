@@ -54,7 +54,6 @@ int main(int argc, char **argv) {
 
     int decodeFlag = 0;
     int c;
-
     while ((c = getopt(argc, argv, "d::")) != -1)
         switch (c) {
             case 'd':
@@ -102,31 +101,33 @@ int main(int argc, char **argv) {
     }
 
     size_t fileSize = (size_t) (fileStat).st_size;
+    size_t fileSizeWithEOF = fileSize + 1;
+
     size_t outFileSize = (size_t) (outFileStat).st_size;
 
-    char *fileContents = malloc(fileSize + 1);
+    char *fileContents = malloc(fileSizeWithEOF);
     readFileByChar(filePtr, &fileContents);
 
-    fileContents[fileSize + 1] = '\0';
+    fileContents[fileSizeWithEOF] = '\0'; // Add EOF char
 
-    struct map *fileCharFreq = createMap((int) fileSize + 1);
+    // *** Character frequencies ***
+    struct map *fileCharFreq = createMap((int) fileSizeWithEOF);
+    groupByChars(fileSizeWithEOF, fileContents, &fileCharFreq);
 
-    groupByChars(fileSize + 1, fileContents, &fileCharFreq);
+    int differentChars = getEntriesTotal(fileCharFreq);
+    printf("Different characters: %d\n", differentChars);
 
-    // printf("a:         %d\n", get(fileCharFreq, 'a'));
-    printf("end of file:         %d\n", get(fileCharFreq, '\0'));
-
-    int numOfDifferentChars = getEntriesTotal(fileCharFreq);
-    printf("Num of different characters: %d\n", numOfDifferentChars);
-
+    // *** Forest creation ***
     struct forest *forest = makeForest(fileCharFreq);
     printf("Forest size: %d\n", forest->size);
 
     struct forest *packedForest = packTree(forest);
-    printSizeValidation(fileSize + 1, packedForest);
+    printSizeValidation(fileSizeWithEOF, packedForest);
 
-    struct tree *encodingTree = packedForest->treeList[0];
+    // *** Encoding tree ***
+    struct tree *encodingTree = packedForest->treeList[0]; // Get encoding tree from forest
 
+    // *** Encoding table ***
     char **encodingTable = calloc(CHAR + 1, sizeof(char *)); // calloc zeros the allocated memory
     if (!encodingTable) {
         perror("calloc encodingTable");
@@ -146,6 +147,7 @@ int main(int argc, char **argv) {
     }
     printf("Encoding table size: %d, max path length: %d\n", count, maxPathLen);
 
+    // *** Encode or decode ***
     if (decodeFlag == 1) { // DECODING
         decode(outFilePath, outFileSize, encodingTree, decompressedFilePath);
     } else { // ENCODING
