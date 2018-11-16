@@ -11,7 +11,7 @@
 
 // Tree traversal inspiration: https://www.geeksforgeeks.org/given-a-binary-tree-print-all-root-to-leaf-paths/
 
-static const int CHAR_PATH_LEN = 500;
+static const int CHAR_PATH_LEN = 1024;
 
 void printFileType(struct stat *fileStat);
 
@@ -38,9 +38,13 @@ void recTraversePaths(struct tree *tree, int data, char **encodingTable, int *pa
 
 void addPath(const int *ints, int len, int c, char **encodingTable);
 
-void encode(const char *fileContents, size_t fileSize, char *endOfFileChar, char *outputFilePath, char **encodingTable);
+void encode(const char *fileContents, size_t fileSize, char *outputFilePath, char **encodingTable);
 
-void decode(const char *filePath, size_t fileSize);
+void decode(const char *filePath, size_t fileSize, struct tree *encodingTree, const char *decompressedFilePath);
+
+void recGetDecodedChar(struct tree *tree, char *decodable, int *decodedChar);
+
+char getBitAsChar(int aBit);
 
 int main(int argc, char **argv) {
     if (argc < 3) {
@@ -64,9 +68,11 @@ int main(int argc, char **argv) {
 
     char *filePath;
     char *outFilePath;
+    char *decompressedFilePath = "decompressed.txt";
     if (decodeFlag == 1) {
         filePath = argv[2];
         outFilePath = argv[3];
+        decompressedFilePath = argv[4];
     } else {
         filePath = argv[1];
         outFilePath = argv[2];
@@ -81,6 +87,12 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
 
+    struct stat outFileStat;
+    if (stat(outFilePath, &outFileStat) == -1) {
+        perror("stat");
+        exit(EXIT_FAILURE);
+    }
+
     printFileType(&fileStat);
     printFileSize(&fileStat);
 
@@ -90,15 +102,19 @@ int main(int argc, char **argv) {
     }
 
     size_t fileSize = (size_t) (fileStat).st_size;
+    size_t outFileSize = (size_t) (outFileStat).st_size;
 
-    char *fileContents = malloc(fileSize);
+    char *fileContents = malloc(fileSize + 1);
     readFileByChar(filePtr, &fileContents);
 
-    struct map *fileCharFreq = createMap((int) fileSize);
+    fileContents[fileSize + 1] = '\0';
 
-    groupByChars(fileSize, fileContents, &fileCharFreq);
+    struct map *fileCharFreq = createMap((int) fileSize + 1);
+
+    groupByChars(fileSize + 1, fileContents, &fileCharFreq);
 
     // printf("a:         %d\n", get(fileCharFreq, 'a'));
+    printf("end of file:         %d\n", get(fileCharFreq, '\0'));
 
     int numOfDifferentChars = getEntriesTotal(fileCharFreq);
     printf("Num of different characters: %d\n", numOfDifferentChars);
@@ -107,11 +123,11 @@ int main(int argc, char **argv) {
     printf("Forest size: %d\n", forest->size);
 
     struct forest *packedForest = packTree(forest);
-    printSizeValidation(fileSize, packedForest);
+    printSizeValidation(fileSize + 1, packedForest);
 
     struct tree *encodingTree = packedForest->treeList[0];
 
-    char **encodingTable = calloc(CHAR + 1, sizeof(char *));
+    char **encodingTable = calloc(CHAR + 1, sizeof(char *)); // calloc zeros the allocated memory
     if (!encodingTable) {
         perror("calloc encodingTable");
         exit(EXIT_FAILURE);
@@ -130,49 +146,108 @@ int main(int argc, char **argv) {
     }
     printf("Encoding table size: %d, max path length: %d\n", count, maxPathLen);
 
-    if (decodeFlag == 1) {
-        decode(filePath, fileSize);
-    } else {
+    if (decodeFlag == 1) { // DECODING
+        decode(outFilePath, outFileSize, encodingTree, decompressedFilePath);
+    } else { // ENCODING
         char *endOfFileChar = (char *) malloc((maxPathLen + 2) * sizeof(char)); // max length + one more + \0
         for (int i = 0; i < (maxPathLen + 1); i++) {
-            endOfFileChar[i] = '1';
+            endOfFileChar[i] = '0';
         }
         endOfFileChar[maxPathLen + 1] = '\0';
 
-        encode(fileContents, fileSize, endOfFileChar, outFilePath, encodingTable);
+        encode(fileContents, fileSize, outFilePath, encodingTable);
     }
 
     return 0;
 }
 
-void decode(const char *filePath, size_t fileSize) {
+void recGetDecodedChar(struct tree *tree, char *decodable, int *decodedChar) {
+    int decodableLength = (int) strlen(decodable);
+
+    char bit = decodable[0];
+
+    if (tree->left == NULL && tree->right == NULL) {
+        *decodedChar = tree->c;
+        return;
+    } else {
+        if (decodableLength < 1) {
+            *decodedChar = 0;
+            return;
+        }
+
+        char *decodableTail = (char *) malloc(decodableLength * sizeof(char));
+        substr(decodable, decodableLength - 1, 1, decodableTail);
+
+        if (bit == '0') {
+            recGetDecodedChar(tree->left, decodableTail, decodedChar);
+        } else {
+            recGetDecodedChar(tree->right, decodableTail, decodedChar);
+        }
+    }
+}
+
+void decode(const char *filePath, size_t fileSize, struct tree *encodingTree, const char *decompressedFilePath) {
     struct BITFILE *inputBitFile = malloc(sizeof(struct BITFILE));
 
     inputBitFile->filePtr = fopen(filePath, "rb"); // Open for reading in binary mode.
+    FILE *decompressedFilePtr = fopen(decompressedFilePath, "w");
 
     int *counter = (int *) malloc(sizeof(int));
     *counter = -1;
     inputBitFile->counter = counter;
 
-    int cnt = 0;
-    int bitsInFile = (int) fileSize * 8;
-    for (int i = 0; i < bitsInFile; i++) {
-        int aBit = getBit(inputBitFile);
-        // printf("%d", aBit);
+    int count = 2;
+    int aBit = getBit(inputBitFile);
 
-        if (cnt == 7) {
-            // printf("\n");
-            cnt = 0;
+    char *decodable = (char *) malloc(count * sizeof(char));
+    decodable[0] = getBitAsChar(aBit);
+    decodable[1] = '\0';
+
+    for (int i = 1; i < (int) fileSize * 8; i++) {
+        int *decodedChar = (int *) malloc(sizeof(int));
+        *decodedChar = 0;
+
+        // printf("decodable %s\n", decodable);
+        recGetDecodedChar(encodingTree, decodable, decodedChar);
+
+        int currentDecodableLength;
+        char *newDecodable;
+        if (*decodedChar == 0) {
+            currentDecodableLength = (int) strlen(decodable);
+            newDecodable = (char *) malloc((currentDecodableLength + 1) * sizeof(char));
+            strcpy(newDecodable, decodable);
         } else {
-            cnt++;
+            printf("%c", (char) *decodedChar);
+            fputc((char) *decodedChar, decompressedFilePtr);
+
+            currentDecodableLength = 0;
+            newDecodable = (char *) malloc((currentDecodableLength + 1) * sizeof(char));
         }
+
+        aBit = getBit(inputBitFile);
+
+        newDecodable[currentDecodableLength] = getBitAsChar(aBit);
+        newDecodable[currentDecodableLength + 1] = '\0';
+
+        // printf("new decodable %s\n", newDecodable);
+
+        decodable = newDecodable;
     }
     printf("\n");
     fclose(inputBitFile->filePtr);
+    fclose(decompressedFilePtr);
+}
+
+char getBitAsChar(int aBit) {
+    if (aBit == 0) {
+        return '0';
+    } else {
+        return '1';
+    }
 }
 
 void
-encode(const char *fileContents, size_t fileSize, char *endOfFileChar, char *outputFilePath, char **encodingTable) {
+encode(const char *fileContents, size_t fileSize, char *outputFilePath, char **encodingTable) {
     struct OUTPUT_BITFILE *outputBitFile = malloc(sizeof(struct BITFILE));
     char *emptyBuffer = (char *) malloc(sizeof(char));
     emptyBuffer[0] = '\0';
@@ -182,12 +257,11 @@ encode(const char *fileContents, size_t fileSize, char *endOfFileChar, char *out
 
     for (int i = 0; i < fileSize; i++) {
         char *encodedChar = encodingTable[fileContents[i]];
-        // printf("encodedChar %s\n", encodedChar);
+        // printf("char: %c, encoding: %s\n", fileContents[i], encodedChar);
 
         putBits(encodedChar, outputBitFile);
     }
-    printf("End of file char: %s\n", endOfFileChar);
-    if (putBits(endOfFileChar, outputBitFile) == 1) {
+    if (putBits(encodingTable[0], outputBitFile) == 1) {
         forceFlush(outputBitFile);
     }
 
@@ -326,7 +400,6 @@ void readFileByChar(FILE *filePtr, char **fileContents) {
     }
 
     printf("Num of characters: %d\n", (int) n);
-    // terminate with the null character
     contents[n] = '\0';
 }
 
