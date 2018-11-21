@@ -16,7 +16,16 @@ struct tree {
     int freq;             /* occurence rate of the tree */
 };
 
+
+struct tree *getTree(size_t fileSizeWithEOF, struct map *fileCharFreq);
+
+struct forest *packTree(struct forest *forest);
+
+void printSizeValidation(size_t fileSize, const struct forest *packedForest);
+
 struct forest *makeForest(struct map *fileCharFreq);
+
+char *encodeTree(struct tree *tree, char *treeEncoding);
 
 void swap(struct tree **xp, struct tree **yp);
 

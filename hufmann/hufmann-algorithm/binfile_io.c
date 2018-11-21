@@ -8,8 +8,6 @@
 typedef FILE BITFILE;
 typedef FILE OUTPUT_BITFILE;
 
-void substr(const char *encodedChar, int length, int position, char *sub);
-
 int getBit(struct BITFILE *bitFile) {
     if (*bitFile->counter == -1) {
         int intFromFile = fgetc(bitFile->filePtr);

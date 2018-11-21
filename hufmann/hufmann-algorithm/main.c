@@ -11,8 +11,6 @@
 
 // Tree traversal inspiration: https://www.geeksforgeeks.org/given-a-binary-tree-print-all-root-to-leaf-paths/
 
-static const int CHAR_PATH_LEN = 1024;
-
 void printFileType(struct stat *fileStat);
 
 void printFileSize(struct stat *fileStat);
@@ -25,11 +23,7 @@ void getTwoMinTrees(struct forest *forest, struct tree **minTree1, struct tree *
 
 struct tree *combineTrees(struct tree *minTree1, struct tree *minTree2);
 
-struct forest *packTree(struct forest *forest);
-
 struct forest *updateForest(const struct forest *forest, struct tree *combinedTree);
-
-void printSizeValidation(size_t fileSize, const struct forest *packedForest);
 
 // Tree traversal
 void traversePaths(struct tree *tree, char **encodingTable, int *maxPathLen);
@@ -45,6 +39,15 @@ void decode(const char *filePath, size_t fileSize, struct tree *encodingTree, co
 void recGetDecodedChar(struct tree *tree, char *decodable, int *decodedChar);
 
 char getBitAsChar(int aBit);
+
+struct map *collectFrequencies(size_t fileSizeWithEOF, const char *fileContents);
+
+
+char **getEncodingTable(struct tree *encodingTree);
+
+char *getFileContents(FILE *filePtr, size_t fileSizeWithEOF);
+
+int printEncodingTable(char *const *encodingTable);
 
 int main(int argc, char **argv) {
     if (argc < 3) {
@@ -88,8 +91,8 @@ int main(int argc, char **argv) {
 
     struct stat outFileStat;
     if (stat(outFilePath, &outFileStat) == -1) {
-        perror("stat");
-        exit(EXIT_FAILURE);
+        // perror("stat");
+        // exit(EXIT_FAILURE);
     }
 
     printFileType(&fileStat);
@@ -105,29 +108,61 @@ int main(int argc, char **argv) {
 
     size_t outFileSize = (size_t) (outFileStat).st_size;
 
-    char *fileContents = malloc(fileSizeWithEOF);
-    readFileByChar(filePtr, &fileContents);
+    char *fileContents = getFileContents(filePtr, fileSizeWithEOF);
 
     fileContents[fileSizeWithEOF] = '\0'; // Add EOF char
 
-    // *** Character frequencies ***
-    struct map *fileCharFreq = createMap((int) fileSizeWithEOF);
-    groupByChars(fileSizeWithEOF, fileContents, &fileCharFreq);
+    struct map *fileCharFreq = collectFrequencies(fileSizeWithEOF, fileContents);
 
-    int differentChars = getEntriesTotal(fileCharFreq);
-    printf("Different characters: %d\n", differentChars);
+    struct tree *encodingTree = getTree(fileSizeWithEOF, fileCharFreq);
 
-    // *** Forest creation ***
-    struct forest *forest = makeForest(fileCharFreq);
-    printf("Forest size: %d\n", forest->size);
+    char **encodingTable = getEncodingTable(encodingTree);
 
-    struct forest *packedForest = packTree(forest);
-    printSizeValidation(fileSizeWithEOF, packedForest);
+    printf("Encoding table: \n");
+    int encodingTableSize = printEncodingTable(encodingTable);
 
-    // *** Encoding tree ***
-    struct tree *encodingTree = packedForest->treeList[0]; // Get encoding tree from forest
+    char *treeEncoding = (char *) malloc((encodingTableSize * 3) * sizeof(char)); // 3 as @ and two leaves
+    encodeTree(encodingTree, treeEncoding);
+    printf("Encoded tree: %s\n", treeEncoding);
 
-    // *** Encoding table ***
+    size_t treeEncodingLength = strlen(treeEncoding);
+
+    struct map *encodingTreeFileCharFreq = collectFrequencies(treeEncodingLength, treeEncoding);
+
+    struct tree *encodingTreeEncodingTree = getTree(treeEncodingLength, encodingTreeFileCharFreq);
+
+    char **encodingTreeEncodingTable = getEncodingTable(encodingTreeEncodingTree);
+
+    printEncodingTable(encodingTreeEncodingTable);
+
+    if (decodeFlag == 1) { // DECODING
+        decode(outFilePath, outFileSize, encodingTree, decompressedFilePath);
+    } else { // ENCODING
+        encode(fileContents, fileSize, outFilePath, encodingTable);
+    }
+
+    return 0;
+}
+
+int printEncodingTable(char *const *encodingTable) {
+    int encodingTableSize = 0;
+    for (int i = 0; i < CHAR; i++) {
+        if (encodingTable[i] != NULL) {
+            printf("%d   %c          %s\n", i, i, encodingTable[i]);
+            encodingTableSize++;
+        }
+    }
+    printf("Encoding table size: %d\n", encodingTableSize);
+    return encodingTableSize;
+}
+
+char *getFileContents(FILE *filePtr, size_t fileSizeWithEOF) {
+    char *fileContents = malloc(fileSizeWithEOF);
+    readFileByChar(filePtr, &fileContents);
+    return fileContents;
+}
+
+char **getEncodingTable(struct tree *encodingTree) {
     char **encodingTable = calloc(CHAR + 1, sizeof(char *)); // calloc zeros the allocated memory
     if (!encodingTable) {
         perror("calloc encodingTable");
@@ -136,31 +171,16 @@ int main(int argc, char **argv) {
 
     int maxPathLen = 0;
     traversePaths(encodingTree, encodingTable, &maxPathLen);
+    return encodingTable;
+}
 
-    printf("Encoding table: \n");
-    int count = 0;
-    for (int i = 0; i < CHAR; i++) {
-        if (encodingTable[i] != NULL) {
-            printf("%d   %c          %s\n", i, i, encodingTable[i]);
-            count++;
-        }
-    }
-    printf("Encoding table size: %d, max path length: %d\n", count, maxPathLen);
+struct map *collectFrequencies(size_t fileSizeWithEOF, const char *fileContents) {
+    struct map *fileCharFreq = createMap((int) fileSizeWithEOF);
+    groupByChars(fileSizeWithEOF, fileContents, &fileCharFreq);
 
-    // *** Encode or decode ***
-    if (decodeFlag == 1) { // DECODING
-        decode(outFilePath, outFileSize, encodingTree, decompressedFilePath);
-    } else { // ENCODING
-        char *endOfFileChar = (char *) malloc((maxPathLen + 2) * sizeof(char)); // max length + one more + \0
-        for (int i = 0; i < (maxPathLen + 1); i++) {
-            endOfFileChar[i] = '0';
-        }
-        endOfFileChar[maxPathLen + 1] = '\0';
-
-        encode(fileContents, fileSize, outFilePath, encodingTable);
-    }
-
-    return 0;
+    int differentChars = getEntriesTotal(fileCharFreq);
+    printf("<INFO> Different characters: %d\n", differentChars);
+    return fileCharFreq;
 }
 
 void recGetDecodedChar(struct tree *tree, char *decodable, int *decodedChar) {
@@ -240,7 +260,7 @@ void decode(const char *filePath, size_t fileSize, struct tree *encodingTree, co
     fclose(decompressedFilePtr);
 }
 
-char getBitAsChar(int aBit) {
+char getBitAsChar(int aBit) { // itoa?
     if (aBit == 0) {
         return '0';
     } else {
@@ -271,7 +291,7 @@ encode(const char *fileContents, size_t fileSize, char *outputFilePath, char **e
 }
 
 void traversePaths(struct tree *tree, char **encodingTable, int *maxPathLen) {
-    int path[CHAR_PATH_LEN];
+    int path[CHAR];
 
     recTraversePaths(tree, -1, encodingTable, path, 0, maxPathLen);
 }
@@ -311,14 +331,6 @@ void addPath(const int *ints, const int len, const int c, char **encodingTable) 
     strcpy(key, encoding);
 
     encodingTable[c] = key;
-}
-
-void printSizeValidation(size_t fileSize, const struct forest *packedForest) {
-    if (fileSize == packedForest->treeList[0]->freq) {
-        printf("<INFO> Packed forest size matches file size\n");
-    } else {
-        printf("<WARNING> Packed forest size does not match file size!\n");
-    }
 }
 
 struct forest *packTree(struct forest *forest) {
