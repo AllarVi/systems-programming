@@ -49,23 +49,23 @@ void printSizeValidation(size_t fileSize, const struct forest *packedForest) {
     }
 }
 
-char *encodeTree(struct tree *tree, char *treeEncoding) {
+unsigned char *encodeTree(struct tree *tree, unsigned char *treeEncoding) {
 
     if (tree->left == NULL && tree->right == NULL) {
-        char *el = (char *) malloc(2 * sizeof(char));
-        el[0] = (char) tree->c;
+        unsigned char *el = (unsigned char *) malloc(2 * sizeof(unsigned char));
+        el[0] = (unsigned char) tree->c;
         el[1] = '\0';
-        printf("Reached leaf with %s\n", el);
+        printf("Reached leaf with %s, ascii: %d\n", el, el[0]);
         // strcat(treeEncoding, el);
         return el;
     } else {
-        strcat(treeEncoding, "@");
+        strcat((char *) treeEncoding, "@");
     }
 
-    strcat(treeEncoding, encodeTree(tree->left, treeEncoding));
-    strcat(treeEncoding, encodeTree(tree->right, treeEncoding));
+    strcat((char *) treeEncoding, (char *) encodeTree(tree->left, treeEncoding));
+    strcat((char *) treeEncoding, (char *) encodeTree(tree->right, treeEncoding));
 
-    return "";
+    return (unsigned char *) "";
 }
 
 void swap(struct tree **xp, struct tree **yp) {

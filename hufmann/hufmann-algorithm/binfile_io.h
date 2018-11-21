@@ -15,7 +15,7 @@ struct BITFILE {
 };
 
 struct OUTPUT_BITFILE {
-    char *buffer;
+    unsigned char *buffer;
     FILE *filePtr;
 };
 
@@ -29,6 +29,6 @@ void forceFlush(struct OUTPUT_BITFILE *bitFile);
 
 void closeOutput(struct BITFILE *bf);        /*finish writing. Flush the last bits to bf->file*/
 
-void substr(const char *encodedChar, int length, int position, char *sub);
+void substr(const unsigned char *encodedChar, int length, int position, unsigned char *sub);
 
 #endif //HUFMANN_ALGORITHM_BINFILE_IO_H

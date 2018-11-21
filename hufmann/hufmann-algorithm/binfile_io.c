@@ -44,10 +44,10 @@ int getBit(struct BITFILE *bitFile) {
 }
 
 void forceFlush(struct OUTPUT_BITFILE *bitFile) {
-    int bufferLength = (int) strlen(bitFile->buffer);
+    int bufferLength = (int) strlen((char *) bitFile->buffer);
     int extraBitsNeeded = 8 - bufferLength;
 
-    char *byteToWrite = (char *) malloc(9 * sizeof(char));
+    unsigned char *byteToWrite = (unsigned char *) malloc(9 * sizeof(unsigned char));
 
     for (int i = 0; i < bufferLength; i++) {
         byteToWrite[i] = bitFile->buffer[i];
@@ -61,39 +61,40 @@ void forceFlush(struct OUTPUT_BITFILE *bitFile) {
 
     printf("final byte to write: %s\n", byteToWrite);
 
-    char charToWrite = strtol(byteToWrite, 0, 2);
+    unsigned char charToWrite = strtol((char *) byteToWrite, 0, 2);
     fputc(charToWrite, bitFile->filePtr);
 }
 
 int putBits(char *encodedChar, struct OUTPUT_BITFILE *bitFile) {
     int encodedCharLength = (int) strlen(encodedChar);
-    int bufferLength = (int) strlen(bitFile->buffer);
+    int bufferLength = (int) strlen((char *) bitFile->buffer);
 
-    char *bitsToBuffer = (char *) malloc((encodedCharLength + bufferLength + 1) * sizeof(char));
-    strcpy(bitsToBuffer, bitFile->buffer);
-    strcat(bitsToBuffer, encodedChar);
+    unsigned char *bitsToBuffer = (unsigned char *) malloc(
+            (encodedCharLength + bufferLength + 1) * sizeof(unsigned char));
+    strcpy((char *) bitsToBuffer, (char *) bitFile->buffer);
+    strcat((char *) bitsToBuffer, encodedChar);
 
     bitFile->buffer = bitsToBuffer; // Update buffer
 
-    while (strlen(bitFile->buffer) >= 8) {
+    while (strlen((char *) bitFile->buffer) >= 8) {
         // printf("%d bits in buffer\n", (int) strlen(bitFile->buffer));
-        char *byteToWrite = (char *) malloc(9 * sizeof(char));
+        unsigned char *byteToWrite = (unsigned char *) malloc(9 * sizeof(unsigned char));
         substr(bitFile->buffer, 8, 0, byteToWrite);
 
-        bufferLength = (int) strlen(bitFile->buffer);
-        char *bitsLeftToBuffer = (char *) malloc((bufferLength - 7) * sizeof(char));
+        bufferLength = (int) strlen((char *) bitFile->buffer);
+        unsigned char *bitsLeftToBuffer = (unsigned char *) malloc((bufferLength - 7) * sizeof(unsigned char));
 
         substr(bitFile->buffer, bufferLength - 8, 8, bitsLeftToBuffer);
 
         // printf("Byte to write %s\n", byteToWrite);
-        char charToWrite = strtol(byteToWrite, 0, 2);
+        unsigned char charToWrite = strtol((char *) byteToWrite, 0, 2);
         fputc(charToWrite, bitFile->filePtr);
 
         // printf("Bits left to buffer %s\n", bitsLeftToBuffer);
 
         bitFile->buffer = bitsLeftToBuffer;
     }
-    int bitsLeftInBuffer = (int) strlen(bitFile->buffer);
+    int bitsLeftInBuffer = (int) strlen((char *) bitFile->buffer);
     // printf("%d bits left in buffer\n", bitsLeftInBuffer);
 
     if (bitsLeftInBuffer > 0) {
@@ -102,7 +103,7 @@ int putBits(char *encodedChar, struct OUTPUT_BITFILE *bitFile) {
     return 0;
 }
 
-void substr(const char *encodedChar, int length, int position, char *sub) {
+void substr(const unsigned char *encodedChar, int length, int position, unsigned char *sub) {
     int c = 0;
     char substring[length];
 
@@ -112,5 +113,5 @@ void substr(const char *encodedChar, int length, int position, char *sub) {
     }
     substring[c] = '\0';
 
-    strcpy(sub, substring);
+    strcpy((char *) sub, substring);
 }

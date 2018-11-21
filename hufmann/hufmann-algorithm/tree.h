@@ -25,7 +25,7 @@ void printSizeValidation(size_t fileSize, const struct forest *packedForest);
 
 struct forest *makeForest(struct map *fileCharFreq);
 
-char *encodeTree(struct tree *tree, char *treeEncoding);
+unsigned char *encodeTree(struct tree *tree, unsigned char *treeEncoding);
 
 void swap(struct tree **xp, struct tree **yp);
 
