@@ -34,7 +34,8 @@ void addPath(const int *ints, int len, int c, char **encodingTable);
 
 void encode(const unsigned char *fileContents, size_t fileSize, char *outputFilePath, char **encodingTable);
 
-void decode(const char *filePath, size_t fileSize, struct tree *encodingTree, const char *decompressedFilePath);
+void decode(const char *filePath, size_t fileSize, struct tree *encodingTree, const char *decompressedFilePath,
+            int fullTreeBits);
 
 void recGetDecodedChar(struct tree *tree, unsigned char *decodable, int *decodedChar);
 
@@ -141,7 +142,7 @@ int main(int argc, char **argv) {
     // total 56 + 8 = 64 bits = 8 bytes
 
     if (decodeFlag == 1) { // DECODING
-        struct tree *decodingTree = getDecodingTree(outFilePath);
+        struct tree *decodingTree = getDecodingTree(filePath);
         char **decodingTable = getEncodingTable(decodingTree);
 
         printf("Decoding table: \n");
@@ -152,7 +153,7 @@ int main(int argc, char **argv) {
         int fullTreeBits = decodedTreeSize + extraTreeBits;
 
         printf("Decoded tree size %d\n", fullTreeBits);
-        // decode(outFilePath, outFileSize, decodingTree, decompressedFilePath);
+        decode(filePath, fileSize, decodingTree, outFilePath, fullTreeBits);
     } else { // ENCODING
         putTree(treeEncoding, outFilePath);
         encode(fileContents, fileSize, outFilePath, encodingTable);
@@ -346,7 +347,8 @@ void recGetDecodedChar(struct tree *tree, unsigned char *decodable, int *decoded
     }
 }
 
-void decode(const char *filePath, size_t fileSize, struct tree *encodingTree, const char *decompressedFilePath) {
+void decode(const char *filePath, size_t fileSize, struct tree *encodingTree, const char *decompressedFilePath,
+            int fullTreeBits) {
     struct BITFILE *inputBitFile = malloc(sizeof(struct BITFILE));
 
     inputBitFile->filePtr = fopen(filePath, "rb"); // Open for reading in binary mode.
@@ -355,6 +357,10 @@ void decode(const char *filePath, size_t fileSize, struct tree *encodingTree, co
     int *counter = (int *) malloc(sizeof(int));
     *counter = -1;
     inputBitFile->counter = counter;
+
+    for (int i = 0; i < fullTreeBits; i++) {
+        getBit(inputBitFile);
+    }
 
     int aBit = getBit(inputBitFile);
 
