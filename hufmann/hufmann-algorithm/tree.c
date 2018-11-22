@@ -55,7 +55,7 @@ unsigned char *encodeTree(struct tree *tree, unsigned char *treeEncoding) {
         unsigned char *el = (unsigned char *) malloc(2 * sizeof(unsigned char));
         el[0] = (unsigned char) tree->c;
         el[1] = '\0';
-        printf("Reached leaf with %s, ascii: %d\n", el, el[0]);
+        // printf("Reached leaf with %s, ascii: %d\n", el, el[0]);
         // strcat(treeEncoding, el);
         return el;
     } else {

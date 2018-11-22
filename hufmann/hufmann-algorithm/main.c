@@ -57,6 +57,8 @@ struct BITFILE *getInputBitFile(char *filePath);
 
 unsigned char *getBitAsString(struct BITFILE *inputBitFile);
 
+int getDecodingTreeSize(int decodingTableSize);
+
 int main(int argc, char **argv) {
     if (argc < 3) {
         printf("Two program arguments should be given at least!\n");
@@ -78,11 +80,9 @@ int main(int argc, char **argv) {
 
     char *filePath;
     char *outFilePath;
-    char *decompressedFilePath = "decompressed.txt";
     if (decodeFlag == 1) {
         filePath = argv[2];
         outFilePath = argv[3];
-        decompressedFilePath = argv[4];
     } else {
         filePath = argv[1];
         outFilePath = argv[2];
@@ -114,13 +114,10 @@ int main(int argc, char **argv) {
     size_t fileSize = (size_t) (fileStat).st_size;
     size_t fileSizeWithEOF = fileSize;
 
-    size_t outFileSize = (size_t) (outFileStat).st_size;
-
     unsigned char *fileContents = getFileContents(filePtr, fileSizeWithEOF);
 
     fileContents[fileSizeWithEOF] = 255; // Add EOF char
     printf("EOF char: %c, code: %d\n", fileContents[fileSizeWithEOF], fileContents[fileSizeWithEOF]);
-    printf("fileContents: %s\n", fileContents);
 
     struct map *fileCharFreq = collectFrequencies(fileSizeWithEOF, fileContents);
 
@@ -136,7 +133,7 @@ int main(int argc, char **argv) {
     encodeTree(encodingTree, treeEncoding);
     printf("Encoded tree: %s\n", treeEncoding);
 
-    // TODO: get decoding tree
+    // Total tree bits calculation
     // 4*1 + 5*9 = 49 bits
     // 49 + 9 end bits = 58
     // total 56 + 8 = 64 bits = 8 bytes
@@ -145,14 +142,12 @@ int main(int argc, char **argv) {
         struct tree *decodingTree = getDecodingTree(filePath);
         char **decodingTable = getEncodingTable(decodingTree);
 
-        printf("Decoding table: \n");
         int decodingTableSize = printEncodingTable(decodingTable);
         printf("Decoding table size: %d\n", decodingTableSize);
-        int decodedTreeSize = decodingTableSize - 1 + decodingTableSize * 9 + 9;
-        int extraTreeBits = 8 - (decodedTreeSize % 8);
-        int fullTreeBits = decodedTreeSize + extraTreeBits;
 
+        int fullTreeBits = getDecodingTreeSize(decodingTableSize);
         printf("Decoded tree size %d\n", fullTreeBits);
+
         decode(filePath, fileSize, decodingTree, outFilePath, fullTreeBits);
     } else { // ENCODING
         putTree(treeEncoding, outFilePath);
@@ -160,6 +155,13 @@ int main(int argc, char **argv) {
     }
 
     return 0;
+}
+
+int getDecodingTreeSize(int decodingTableSize) {
+    int decodedTreeSize = decodingTableSize - 1 + decodingTableSize * 9 + 9;
+    int extraTreeBits = 8 - (decodedTreeSize % 8);
+    int fullTreeBits = decodedTreeSize + extraTreeBits;
+    return fullTreeBits;
 }
 
 struct tree *recGetDecodingTree(struct BITFILE *bitFile);
@@ -249,7 +251,7 @@ putTree(unsigned char *treeEncoding, char *outputFilePath) {
     for (int i = 0; i < strlen((char *) treeEncoding); i++) {
         if (treeEncoding[i] == '@') {
             putBits("1", outputBitFile);
-            printf("char: %c, encoding: %s\n", treeEncoding[i], "1");
+            // printf("char: %c, encoding: %s\n", treeEncoding[i], "1");
         } else {
             unsigned char *encodedChar = (unsigned char *) malloc(10 * sizeof(unsigned char));
             encodedChar[0] = '0';
@@ -273,7 +275,7 @@ putTree(unsigned char *treeEncoding, char *outputFilePath) {
             encodedChar[9] = '\0';
 
             putBits((char *) encodedChar, outputBitFile);
-            printf("char: %c, encoding: %s\n", treeEncoding[i], encodedChar);
+            // printf("char: %c, encoding: %s\n", treeEncoding[i], encodedChar);
         }
     }
     if (putBits("000000000", outputBitFile) == 1) {
@@ -287,7 +289,8 @@ int printEncodingTable(char *const *encodingTable) {
     int encodingTableSize = 0;
     for (int i = 0; i < CHAR; i++) {
         if (encodingTable[i] != NULL) {
-            printf("%d   %c          %s\n", i, i, encodingTable[i]);
+            // Useful log
+            // printf("%d   %c          %s\n", i, i, encodingTable[i]);
             encodingTableSize++;
         }
     }
@@ -399,8 +402,6 @@ void decode(const char *filePath, size_t fileSize, struct tree *encodingTree, co
 
         newDecodable[currentDecodableLength] = getBitAsChar(aBit);
         newDecodable[currentDecodableLength + 1] = '\0';
-
-        // printf("new decodable %s\n", newDecodable);
 
         decodable = newDecodable;
     }
