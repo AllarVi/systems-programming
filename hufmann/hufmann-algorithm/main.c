@@ -34,7 +34,7 @@ void addPath(const int *ints, int len, int c, char **encodingTable);
 
 void encode(const unsigned char *fileContents, size_t fileSize, char *outputFilePath, char **encodingTable);
 
-void decode(const char *filePath, size_t fileSize, struct tree *encodingTree, const char *decompressedFilePath,
+void decode(const char *filePath, size_t fileSize, struct tree *decodingTree, const char *decompressedFilePath,
             int fullTreeBits);
 
 void recGetDecodedChar(struct tree *tree, unsigned char *decodable, int *decodedChar);
@@ -158,9 +158,11 @@ int main(int argc, char **argv) {
 }
 
 int getDecodingTreeSize(int decodingTableSize) {
-    int decodedTreeSize = decodingTableSize - 1 + decodingTableSize * 9 + 9;
-    int extraTreeBits = 8 - (decodedTreeSize % 8);
-    int fullTreeBits = decodedTreeSize + extraTreeBits;
+    int decodedTreeSize = (decodingTableSize - 1) + (decodingTableSize * 9);
+    // printf("Decoded tree size %d\n", decodedTreeSize);
+    int decodedTreeSizeWithEndByte = decodedTreeSize + 8;
+    int extraTreeBits = 8 - (decodedTreeSizeWithEndByte % 8);
+    int fullTreeBits = decodedTreeSizeWithEndByte + extraTreeBits;
     return fullTreeBits;
 }
 
@@ -350,11 +352,11 @@ void recGetDecodedChar(struct tree *tree, unsigned char *decodable, int *decoded
     }
 }
 
-void decode(const char *filePath, size_t fileSize, struct tree *encodingTree, const char *decompressedFilePath,
+void decode(const char *filePath, size_t fileSize, struct tree *decodingTree, const char *decompressedFilePath,
             int fullTreeBits) {
     struct BITFILE *inputBitFile = malloc(sizeof(struct BITFILE));
 
-    inputBitFile->filePtr = fopen(filePath, "rb"); // Open for reading in binary mode.
+    inputBitFile->filePtr = fopen(filePath, "rb");
     FILE *decompressedFilePtr = fopen(decompressedFilePath, "w");
 
     int *counter = (int *) malloc(sizeof(int));
@@ -364,6 +366,7 @@ void decode(const char *filePath, size_t fileSize, struct tree *encodingTree, co
     for (int i = 0; i < fullTreeBits; i++) {
         getBit(inputBitFile);
     }
+    inputBitFile->buffer = NULL;
 
     int aBit = getBit(inputBitFile);
 
@@ -375,8 +378,8 @@ void decode(const char *filePath, size_t fileSize, struct tree *encodingTree, co
         int *decodedChar = (int *) malloc(sizeof(int));
         *decodedChar = 0;
 
-        // printf("decodable %s\n", decodable);
-        recGetDecodedChar(encodingTree, decodable, decodedChar);
+        recGetDecodedChar(decodingTree, decodable, decodedChar);
+        // printf("decodedChar %d\n", *decodedChar);
 
         if (*decodedChar == 255) {
             break;
@@ -385,13 +388,12 @@ void decode(const char *filePath, size_t fileSize, struct tree *encodingTree, co
         int currentDecodableLength;
         unsigned char *newDecodable;
 
-        // printf("decodedChar %d\n", *decodedChar);
         if (*decodedChar == 0) { // decoded bit == 0
             currentDecodableLength = (int) strlen((char *) decodable);
             newDecodable = (unsigned char *) malloc((currentDecodableLength + 1) * sizeof(unsigned char));
             strcpy((char *) newDecodable, (char *) decodable);
         } else { // decoded bit = 1
-            printf("%c", (unsigned char) *decodedChar);
+            // printf("%c", (unsigned char) *decodedChar);
             fputc((unsigned char) *decodedChar, decompressedFilePtr);
 
             currentDecodableLength = 0;

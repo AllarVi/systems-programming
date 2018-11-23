@@ -46,6 +46,7 @@ int getBit(struct BITFILE *bitFile) {
 void forceFlush(struct OUTPUT_BITFILE *bitFile) {
     int bufferLength = (int) strlen((char *) bitFile->buffer);
     int extraBitsNeeded = 8 - bufferLength;
+    printf("Extra bits needed: %d\n", extraBitsNeeded);
 
     unsigned char *byteToWrite = (unsigned char *) malloc(9 * sizeof(unsigned char));
 
